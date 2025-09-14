@@ -1,11 +1,5 @@
 import Course from './components/Course'
 
-const Header = ({ header }) => (
-    <div>
-      <h1>{header}</h1>
-    </div>
-)
-
 const App = () => {
   const courses = [
     {
@@ -54,7 +48,7 @@ const App = () => {
 
   return (
     <div>
-      <Header header="Web development curriculum" />
+      <h1>Web development curriculum</h1>
       <Course courses={courses} />
     </div>
   )
