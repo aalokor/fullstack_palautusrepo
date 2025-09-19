@@ -1,7 +1,29 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+morgan.token('body', (req) => JSON.stringify(req.body))
+
+// 'tiny' style created with tokens
+const morganLogger = (tokens, req, res) => {
+  const baseLog = [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.status(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ')
+
+  if (req.method === 'POST') {
+    return `${baseLog} ${tokens.body(req, res)}`
+  }
+
+  return baseLog
+}
+
+app.use(morgan(morganLogger))
 
 let persons = [
     { 
@@ -30,10 +52,6 @@ const generateId = () => {
   const id = Math.floor(Math.random() * 10000)
   return String(id)
 }
-
-app.get('/', (request, response) => {
-  response.send('<h1>Phonebook</h1>')
-})
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
@@ -97,8 +115,19 @@ app.post('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  response.send(`Phonebook has info for ${persons.length} people`)
+  const timestamp = new Date()
+
+  response.send(`
+    <p>Phonebook has info for ${persons.length} people</p>
+    <p>${timestamp}</p>
+  `)
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
