@@ -24,10 +24,9 @@ const App = () => {
     country => country.name.common.toLowerCase().trim() === trimmedFilter
   )
   
-  const countriesToShow = trimmedFilter === '' ? [] 
-  : match ? [match]
-    : countries.filter(country =>
-        country.name.common.toLowerCase().trim().includes(trimmedFilter)
+  const countriesToShow = trimmedFilter === '' ? [] : match ? [match]
+      : countries.filter(country =>
+          country.name.common.toLowerCase().trim().includes(trimmedFilter)
       )
     
   useEffect(() => {
@@ -40,7 +39,7 @@ const App = () => {
     if (country) {
       weatherService.getWeather(country).then((countryWeather) => {
         setWeather(countryWeather);
-    })
+      })
     } else {
       setWeather('')
     }

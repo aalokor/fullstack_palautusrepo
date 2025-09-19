@@ -13,19 +13,18 @@ const FullCountry = ({ country }) => {
         return
   
     return (
-        <div>
-            <h1>{country.name.common}</h1>
-            <p>
-                Capital {country.capital} <br />
-                Area {country.area}
-            </p>
-            <h2>Languages</h2>
-            <Languages languages={country.languages} />
-            <img src={country.flags.png} />
-            <h2>Weather in {country.name.common}</h2>
-        </div>
+      <div>
+          <h1>{country.name.common}</h1>
+          <p>
+            Capital {country.capital} <br />
+            Area {country.area}
+          </p>
+          <h2>Languages</h2>
+          <Languages languages={country.languages} />
+          <img src={country.flags.png} />
+          <h2>Weather in {country.name.common}</h2>
+      </div>
     )
-
-    }
+}
 
 export default FullCountry
