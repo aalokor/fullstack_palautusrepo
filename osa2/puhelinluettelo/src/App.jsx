@@ -71,8 +71,8 @@ const App = () => {
           setMessageType('')
         }, 5000)
       })
-      .catch(() => {
-        setMessage(`Failed to add ${personObject.name}`)
+      .catch((error) => {
+        setMessage(`${error.response.data.error}`)
         setMessageType('error')
         setTimeout(() => {
           setMessage(null)
