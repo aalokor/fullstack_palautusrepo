@@ -37,7 +37,7 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
   }
-  
+
   next(error)
 }
 
@@ -49,12 +49,12 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id).then(person => {
-     if (person) {
-        response.json(person)
-      } else {
-        response.status(404).end()
-      }
-    })
+    if (person) {
+      response.json(person)
+    } else {
+      response.status(404).end()
+    }
+  })
     .catch(error => next(error))
 })
 
@@ -68,7 +68,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  
+
   const person = new Person({
     name: body.name,
     number: body.number
@@ -76,15 +76,15 @@ app.post('/api/persons', (request, response, next) => {
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
-    })
-    .catch(error => next(error))
   })
+    .catch(error => next(error))
+})
 
 app.get('/info', (request, response) => {
   const timestamp = new Date()
 
   Person.countDocuments({}).then(count => {
-  response.send(`
+    response.send(`
     <p>Phonebook has info for ${count} people</p>
     <p>${timestamp}</p>
   `)

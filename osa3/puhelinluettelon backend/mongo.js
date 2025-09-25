@@ -23,20 +23,20 @@ const Person = mongoose.model('Person', personSchema)
 
 if (name && number) {
   const person = new Person({
-  name: name,
-  number: number,
+    name: name,
+    number: number,
   })
 
-  person.save().then(result => {
-  console.log('person saved!')
-  mongoose.connection.close()
+  person.save().then(() => {
+    console.log('person saved!')
+    mongoose.connection.close()
   })
 } else {
   Person.find({}).then(result => {
-    console.log(`phonebook:`)
+    console.log('phonebook:')
     result.forEach(person => {
-    console.log(`${person.name} ${person.number}`)
-  })
-  mongoose.connection.close()
+      console.log(`${person.name} ${person.number}`)
+    })
+    mongoose.connection.close()
   })
 }
