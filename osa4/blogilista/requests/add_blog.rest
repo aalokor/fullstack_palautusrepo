@@ -2,7 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Testiblogi",
+    "title": "",
     "author": "Teppo Testaaja",
     "url": "http://testiblogi.com",
     "likes": "10"

@@ -111,6 +111,38 @@ test('blog without url is not added and leads to request error', async () => {
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })
 
+test('blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+  
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+  const ids = blogsAtEnd.map(r => r.id)
+  assert(!ids.includes(blogToDelete.id))
+})
+
+test('blog can be modified and the correct information is saved', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToModify = blogsAtStart[0]
+  const likes = {
+    likes: 15
+  }
+
+  const response = await api
+    .put(`/api/blogs/${blogToModify.id}`)
+    .send(likes)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  assert.strictEqual(response.body.likes, likes.likes)
+})
+
+
 after(async () => {
   await mongoose.connection.close()
 })
