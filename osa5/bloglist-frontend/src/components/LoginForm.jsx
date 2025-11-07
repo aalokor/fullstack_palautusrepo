@@ -1,6 +1,19 @@
-const LoginForm = ({ handleLogin, username, password, setUsername, setPassword }) => (
+import { useState } from 'react'
+
+const LoginForm = ({ handleLogin }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const login = (event) => {
+    event.preventDefault()
+    handleLogin({ username, password })
+    setUsername('')
+    setPassword('')
+  }
+
+  return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={login}>
         <div>
           <label>
             username
@@ -24,6 +37,7 @@ const LoginForm = ({ handleLogin, username, password, setUsername, setPassword }
         <button type="submit">login</button>
       </form>
     </div>
-)
+  )
+}
 
 export default LoginForm

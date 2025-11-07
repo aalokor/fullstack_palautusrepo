@@ -17,3 +17,25 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+.button-remove {
+  background-color: lightskyblue;          
+  border: 1px solid grey;           
+  padding: 5px 10px;     
+  border-radius: 5px;           
+}
+
+.button-remove:hover {
+  background-color: deepskyblue;  /* optional: hover effect */
+}
+
+.button {
+  background-color: whitesmoke;          
+  border: 1px solid grey;           
+  padding: 4px 6px;     
+  border-radius: 5px;           
+}
+
+.button:hover {
+  background-color: lightgray;  /* optional: hover effect */
+}
