@@ -1,3 +1,4 @@
 **/node_modules/
 osa2/puhelinluettelo/dist
 .env
+coverage/
