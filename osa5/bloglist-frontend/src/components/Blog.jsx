@@ -16,7 +16,7 @@ const Blog = ({ blog, likeBlog, user, removeBlog }) => {
 
   if (!full) {
     return (
-      <div style={blogStyle}>
+      <div className="blog" style={blogStyle}>
         <div>
           {blog.title} {blog.author}
           <button className="button" onClick={toggleFull}>view</button>
@@ -26,7 +26,7 @@ const Blog = ({ blog, likeBlog, user, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div>
         {blog.title}
         <button className="button" onClick={toggleFull}>hide</button>

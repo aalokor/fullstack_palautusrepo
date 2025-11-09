@@ -15,4 +15,14 @@ const createBlog = async (page, title, author, url) => {
   await page.getByRole('button', { name: 'create' }).click()
 }
 
-export { loginWith, createBlog }
+const addUser = async (request, name, username, password) => {
+  await request.post('/api/users', {
+    data: {
+      name: name,
+      username: username,
+      password: password
+    }
+  })
+}
+
+export { loginWith, createBlog, addUser }
