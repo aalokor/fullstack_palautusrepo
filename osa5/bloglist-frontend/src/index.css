@@ -26,7 +26,7 @@
 }
 
 .button-remove:hover {
-  background-color: deepskyblue;  /* optional: hover effect */
+  background-color: deepskyblue;  
 }
 
 .button {
@@ -37,5 +37,5 @@
 }
 
 .button:hover {
-  background-color: lightgray;  /* optional: hover effect */
+  background-color: lightgray;
 }

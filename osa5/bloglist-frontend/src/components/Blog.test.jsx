@@ -76,12 +76,12 @@ describe('<Blog />', () => {
 
   test('clicking the like-button twice calls event handler twice', async () => {
     const eventUser = userEvent.setup()
-    const button_view = screen.getByText('view')
-    await eventUser.click(button_view)
+    const buttonView = screen.getByText('view')
+    await eventUser.click(buttonView)
 
-    const button = screen.getByText('like')
-    await eventUser.click(button)
-    await eventUser.click(button)
+    const buttonLike = screen.getByText('like')
+    await eventUser.click(buttonLike)
+    await eventUser.click(buttonLike)
 
     expect(likeBlog.mock.calls).toHaveLength(2)
   })
