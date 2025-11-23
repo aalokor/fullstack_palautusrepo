@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom/client'
 import { useState } from 'react'
 
 import {
@@ -6,7 +5,6 @@ import {
   Routes,
   Route,
   Link,
-  Navigate,
   useNavigate,
   useMatch
 } from "react-router-dom"
@@ -24,7 +22,7 @@ const Menu = () => {
   )
 }
 
-const Anecdote = ({ anecdote }) => (
+const Anecdote = ({ anecdote }) => (  
   <div>
     <h2>{anecdote.content} by {anecdote.author}</h2>
       <p>has {anecdote.votes} votes</p>
@@ -71,7 +69,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -81,6 +79,13 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    props.setMessage(`a new anecdote ${content} created!`)
+    setTimeout(() => {
+      props.setMessage('')
+    }, 5000)
+
+    navigate('/')
   }
 
   return (
@@ -125,8 +130,6 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
-
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -144,7 +147,7 @@ const App = () => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-  }
+  } 
 
   const match = useMatch('/anecdotes/:id')
   const anecdote = match 
@@ -155,15 +158,15 @@ const App = () => {
     <div>
 
       <h1>Software anecdotes</h1>
-      <div>{message}</div>
-
       <div>
         <Menu />
       </div>
 
+      <div>{message}</div>
+
       <Routes>
         <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdote} />} />
-        <Route path="/create" element={<CreateNew />} />
+        <Route path="/create" element={<CreateNew addNew={addNew} setMessage={setMessage} />} />
         <Route path="/about" element={<About />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
       </Routes>
