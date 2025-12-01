@@ -1,0 +1,41 @@
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.button-remove {
+  background-color: lightskyblue;
+  border: 1px solid grey;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.button-remove:hover {
+  background-color: deepskyblue;
+}
+
+.button {
+  background-color: whitesmoke;
+  border: 1px solid grey;
+  padding: 4px 6px;
+  border-radius: 5px;
+}
+
+.button:hover {
+  background-color: lightgray;
+}
