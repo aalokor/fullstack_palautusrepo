@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer
+{
+    "url": "http://adminblogi.com",
+    "title": "Adminblogi2",
+    "author": "Aatu Admini",
+    "likes": "10"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "blogilista",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "aalokor",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "test": "cross-env NODE_ENV=test node --test --test-concurrency=1",
+    "start:test": "cross-env NODE_ENV=test node --watch index.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^8.18.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.1.4"
+  }
+}

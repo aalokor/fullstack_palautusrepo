@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateBlog, removeBlog } from '../reducers/blogReducer'
+import { updateBlog, removeBlog, createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import CommentForm from './CommentForm'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -35,6 +36,14 @@ const Blog = () => {
     }
   }
 
+  const handleComment = async ({ text }) => {
+    try {
+      dispatch(createComment(id, text))
+    } catch {
+      dispatch(setNotification('Could not add comment', 'error', 5))
+    }
+  }
+
   if (blogs.length === 0) return <div>loading...</div>
 
   const blog = blogs.find((b) => b.id === id)
@@ -53,9 +62,17 @@ const Blog = () => {
       </div>
       <div>added by {blog.user.name}</div>
       {blog.user?.username === user.username && (
-        <button className="button-remove" onClick={() => handleDelete(blog)}>
-          remove
-        </button>
+        <>
+          <button className="button-remove" onClick={() => handleDelete(blog)}>
+            remove
+          </button>
+          <CommentForm handleComment={handleComment} />
+          <ul>
+            {blog.comments?.map((comment) => (
+              <li key={comment.id}>{comment.text}</li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   )
