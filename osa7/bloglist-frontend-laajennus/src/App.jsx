@@ -43,7 +43,7 @@ const App = () => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       dispatch(initializeUser(user))
     } catch {
-      dispatch(setNotification('wrong username or password', 'error', 5))
+      dispatch(setNotification('wrong username or password', 'danger', 5))
     }
   }
 
@@ -59,23 +59,13 @@ const App = () => {
         )
       )
     } catch {
-      dispatch(setNotification("A new blog couldn't be added", 'error', 5))
+      dispatch(setNotification("A new blog couldn't be added", 'danger', 5))
     }
   }
 
   if (user === null) {
     return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification />
-        <LoginForm handleLogin={handleLogin} />
-      </div>
-    )
-  }
-
-  if (user === null) {
-    return (
-      <div>
+      <div className="container">
         <h2>Log in to application</h2>
         <Notification />
         <LoginForm handleLogin={handleLogin} />
@@ -85,7 +75,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      <div className="container">
         <Menu />
         <h2>blog app</h2>
         <Notification />

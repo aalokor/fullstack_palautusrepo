@@ -1,41 +1,14 @@
-.error {
-  color: red;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+.btn-primary {
+  background-color: #973b5e !important;
+  border-color: #000000 !important;
 }
 
-.success {
-  color: green;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #7e304e !important;
+  border-color: #000000 !important;
 }
 
-.button-remove {
-  background-color: lightskyblue;
-  border: 1px solid grey;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-.button-remove:hover {
-  background-color: deepskyblue;
-}
-
-.button {
-  background-color: whitesmoke;
-  border: 1px solid grey;
-  padding: 4px 6px;
-  border-radius: 5px;
-}
-
-.button:hover {
-  background-color: lightgray;
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: #ffecf7 !important;
 }

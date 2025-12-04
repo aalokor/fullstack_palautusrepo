@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Form, Button } from 'react-bootstrap'
 
 const CreateForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState('')
@@ -20,35 +21,47 @@ const CreateForm = ({ createBlog }) => {
   }
 
   return (
-    <form onSubmit={addBlog}>
-      <h2>create new</h2>
-      <div>
-        title:{' '}
-        <input
-          value={newTitle}
-          onChange={(event) => setNewTitle(event.target.value)}
-        />
-      </div>
-      <div>
-        author:{' '}
-        <input
-          value={newAuthor}
-          onChange={(event) => setNewAuthor(event.target.value)}
-        />
-      </div>
-      <div>
-        url:{' '}
-        <input
-          value={newUrl}
-          onChange={(event) => setNewUrl(event.target.value)}
-        />
-      </div>
-      <div>
-        <button className="button" type="submit">
+    <div>
+      <Form onSubmit={addBlog}>
+        <Form.Group>
+          <Form.Label>title:</Form.Label>
+          <Form.Control
+            type="text"
+            value={newTitle}
+            onChange={(event) => setNewTitle(event.target.value)}
+            className="w-50"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>author:</Form.Label>
+          <Form.Control
+            type="text"
+            value={newAuthor}
+            onChange={(event) => setNewAuthor(event.target.value)}
+            className="w-50"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>url:</Form.Label>
+          <Form.Control
+            type="text"
+            value={newUrl}
+            onChange={(event) => setNewUrl(event.target.value)}
+            className="w-50"
+          />
+        </Form.Group>
+        <Button
+          variant="primary"
+          type="submit"
+          style={{
+            backgroundColor: '#973b5eff',
+            borderColor: '#000000ff',
+          }}
+        >
           create
-        </button>
-      </div>
-    </form>
+        </Button>
+      </Form>
+    </div>
   )
 }
 

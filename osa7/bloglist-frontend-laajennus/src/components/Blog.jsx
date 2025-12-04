@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateBlog, removeBlog, createComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import CommentForm from './CommentForm'
+import { Table, Button } from 'react-bootstrap'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const Blog = () => {
     try {
       dispatch(updateBlog(blogObject))
     } catch {
-      dispatch(setNotification('Could not update likes', 'error', 5))
+      dispatch(setNotification('Could not update likes', 'danger', 5))
     }
   }
 
@@ -32,7 +33,7 @@ const Blog = () => {
       )
       navigate('/')
     } catch {
-      dispatch(setNotification('Could not remove blog', 'error', 5))
+      dispatch(setNotification('Could not remove blog', 'danger', 5))
     }
   }
 
@@ -40,7 +41,7 @@ const Blog = () => {
     try {
       dispatch(createComment(id, text))
     } catch {
-      dispatch(setNotification('Could not add comment', 'error', 5))
+      dispatch(setNotification('Could not add comment', 'danger', 5))
     }
   }
 
@@ -53,27 +54,49 @@ const Blog = () => {
       <h2>
         {blog.title} {blog.author}
       </h2>
-      <a href={blog.url}>{blog.url}</a>
-      <div>
-        {blog.likes} likes
-        <button className="button" onClick={() => handleLike(blog)}>
-          like
-        </button>
-      </div>
-      <div>added by {blog.user.name}</div>
+      <Table striped>
+        <tbody>
+          <tr>
+            <td>
+              <a href={blog.url}>{blog.url}</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              {blog.likes} likes
+              <Button
+                variant="primary"
+                onClick={() => handleLike(blog)}
+                className="ms-2"
+              >
+                like
+              </Button>
+            </td>
+          </tr>
+          <tr>
+            <td>{blog.user.name}</td>
+          </tr>
+        </tbody>
+      </Table>
       {blog.user?.username === user.username && (
-        <>
-          <button className="button-remove" onClick={() => handleDelete(blog)}>
-            remove
-          </button>
-          <CommentForm handleComment={handleComment} />
-          <ul>
-            {blog.comments?.map((comment) => (
-              <li key={comment.id}>{comment.text}</li>
-            ))}
-          </ul>
-        </>
+        <Button
+          variant="primary"
+          onClick={() => handleDelete(blog)}
+          className="ms-2"
+        >
+          remove
+        </Button>
       )}
+      <CommentForm handleComment={handleComment} />
+      <Table striped>
+        <tbody>
+          {blog.comments?.map((comment) => (
+            <tr key={comment.id}>
+              <td>{comment.text}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </div>
   )
 }
