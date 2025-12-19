@@ -8,10 +8,6 @@ const userSchema = mongoose.Schema({
     minlength: 3,
   },
   favoriteGenre: String,
-  passwordHash: {
-    type: String,
-    required: true,
-  },
 })
 
 userSchema.set('toJSON', {
