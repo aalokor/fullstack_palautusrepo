@@ -96,6 +96,7 @@ const BOOK_DETAILS = gql`
   }
 `
 
+/*
 export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
@@ -103,4 +104,20 @@ export const BOOK_ADDED = gql`
     }
   }
   ${BOOK_DETAILS}
+` */
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      id
+      title
+      published
+      genres
+      author {
+        id
+        name
+        bookCount
+      }
+    }
+  }
 `

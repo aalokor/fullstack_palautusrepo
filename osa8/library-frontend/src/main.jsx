@@ -5,17 +5,16 @@ import App from './App.jsx'
 import {
   ApolloClient,
   InMemoryCache,
-  createHttpLink,
-  split,
+  HttpLink,
+  ApolloLink,
 } from '@apollo/client'
 import { ApolloProvider } from '@apollo/client/react'
-import { setContext } from '@apollo/client/link/context'
-
+import { SetContextLink } from '@apollo/client/link/context'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 
-const authLink = setContext((_, { headers }) => {
+const authLink = new SetContextLink(({ headers }) => {
   const token = localStorage.getItem('user-token')
   return {
     headers: {
@@ -25,17 +24,19 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
-})
+const httpLink = new HttpLink({ uri: 'http://localhost:4000/graphql' })
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://localhost:4000',
+    url: 'ws://localhost:4000/graphql',
+    on: {
+      connected: () => console.log('WS connected'),
+      error: (err) => console.log('WS error', err),
+    },
   })
 )
 
-const splitLink = split(
+const splitLink = ApolloLink.split(
   ({ query }) => {
     const definition = getMainDefinition(query)
     return (

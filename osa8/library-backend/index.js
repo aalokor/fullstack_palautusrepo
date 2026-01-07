@@ -11,6 +11,7 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
+const { PubSub } = require('graphql-subscriptions')
 
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
@@ -39,11 +40,20 @@ const start = async () => {
 
   const wsServer = new WebSocketServer({
     server: httpServer,
-    path: '/',
+    path: '/graphql',
   })
 
+  const pubsub = new PubSub()
   const schema = makeExecutableSchema({ typeDefs, resolvers })
-  const serverCleanup = useServer({ schema }, wsServer)
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: async (ctx, msg, args) => {
+        return { pubsub }
+      },
+    },
+    wsServer
+  )
 
   const server = new ApolloServer({
     schema,
@@ -63,7 +73,7 @@ const start = async () => {
 
   await server.start()
   app.use(
-    '/',
+    '/graphql',
     cors(),
     express.json(),
     expressMiddleware(server, {

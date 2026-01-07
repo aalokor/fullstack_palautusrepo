@@ -6,7 +6,8 @@ import NewBook from './components/NewBook'
 import Notify from './components/Notify'
 import LoginForm from './components/LoginForm'
 import Recommend from './components/Recommend'
-import { BOOK_ADDED, ALL_BOOKS } from './queries.js'
+import { BOOK_ADDED } from './queries.js'
+import { addBookToCache } from './utils/apolloCache'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -29,14 +30,10 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
+      console.log(data)
       const addedBook = data.data.bookAdded
       notify(`${addedBook.title} added`)
-
-      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        return {
-          allBooks: allBooks.concat(addedBook),
-        }
-      })
+      addBookToCache(client.cache, addedBook)
     },
   })
 
