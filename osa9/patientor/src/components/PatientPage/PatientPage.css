@@ -1,0 +1,13 @@
+.entry {
+  border: 1px solid #000000da;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.new_entry {
+  border: 1px dotted #000000da;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}

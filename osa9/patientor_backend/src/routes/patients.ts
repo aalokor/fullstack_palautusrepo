@@ -1,15 +1,25 @@
 import express, { Request, Response, NextFunction } from "express";
 import patientsService from "../services/patientsService";
-import { NewEntrySchema } from "../utils";
+import { NewPatientSchema, NewEntrySchema } from "../utils";
 
 import { z } from "zod";
-import { NewPatient, Patient } from "../types";
+import { NewPatient, Patient, NewEntry } from "../types";
 
 const router = express.Router();
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
   try {
-    NewEntrySchema.parse(req.body);
+    req.body = NewPatientSchema.parse(req.body); //req.body added
+    console.log(req.body);
+    next();
+  } catch (error: unknown) {
+    next(error);
+  }
+};
+
+const newEntryParser = (req: Request, _res: Response, next: NextFunction) => {
+  try {
+    req.body = NewEntrySchema.parse(req.body);
     console.log(req.body);
     next();
   } catch (error: unknown) {
@@ -48,8 +58,23 @@ router.post(
   "/",
   newPatientParser,
   (req: Request<unknown, unknown, NewPatient>, res: Response<Patient>) => {
-    const addedEntry = patientsService.addPatient(req.body);
-    res.json(addedEntry);
+    const addedPatient = patientsService.addPatient(req.body);
+    res.json(addedPatient);
+  }
+);
+
+router.post(
+  "/:id/entries",
+  newEntryParser,
+  (req: Request<{ id: string }, unknown, NewEntry>, res: Response) => {
+    const patientId = req.params.id;
+
+    if (!patientId) {
+      return res.status(400).send("Missing patient id");
+    }
+
+    const addedEntry = patientsService.addEntry(req.body, patientId);
+    return res.json(addedEntry);
   }
 );
 
