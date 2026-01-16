@@ -16,6 +16,12 @@ export enum EntryType {
   OccupationalHealthcare = "OccupationalHealthcare",
 }
 
+export interface BackendError {
+  code: string;
+  path: string[];
+  message: string;
+}
+
 interface BaseEntry {
   id: string;
   description: string;

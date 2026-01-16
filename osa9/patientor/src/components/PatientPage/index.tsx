@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
+import diagnosisService from "../../services/diagnosis";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import TransgenderIcon from "@mui/icons-material/Transgender";
@@ -9,7 +10,13 @@ import HospitalIcon from "@mui/icons-material/LocalHospital";
 import CheckIcon from "@mui/icons-material/Healing";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import "./PatientPage.css";
-import { HealthCheckRating, EntryFormValues, Patient } from "../../types";
+import {
+  HealthCheckRating,
+  EntryFormValues,
+  Patient,
+  BackendError,
+  Diagnosis,
+} from "../../types";
 import Togglable from "./Togglable";
 import AddEntryForm from "../AddEntryForm";
 import axios from "axios";
@@ -24,6 +31,7 @@ const HealthRatingIcon = ({ rating }: { rating: HealthCheckRating }) => {
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [diagnosis, setDiagnosis] = useState<Diagnosis[]>([]);
   const [error, setError] = useState<string>();
 
   useEffect(() => {
@@ -42,28 +50,35 @@ const PatientPage = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    const fetchDiagnosisList = async () => {
+      const diagnosislist = await diagnosisService.getAll();
+      setDiagnosis(diagnosislist);
+    };
+    void fetchDiagnosisList();
+  }, []);
+
   const submitNewEntry = async (values: EntryFormValues) => {
     if (!id) {
       setError("No patient id");
       return;
     }
     try {
-      const entry = await patientService.createEntry(id, values);
-      console.log(entry);
+      await patientService.createEntry(id, values);
+      const updatedPatient = await patientService.getOne(id);
+      setPatient(updatedPatient);
     } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        if (e?.response?.data && typeof e?.response?.data === "string") {
-          const message = e.response.data.replace(
-            "Something went wrong. Error: ",
-            ""
-          );
-          console.error(message);
-          setError(message);
+      if (axios.isAxiosError(e) && e?.response?.data) {
+        const data = e.response.data as { error?: BackendError[] };
+
+        if (Array.isArray(data.error)) {
+          const messages = data.error.map((err) => err.message).join(", ");
+          console.error(messages);
+          setError(messages);
         } else {
-          setError("Unrecognized axios error");
+          setError("Unrecognized backend error format");
         }
       } else {
-        console.error("Unknown error", e);
         setError("Unknown error");
       }
     }
@@ -94,7 +109,7 @@ const PatientPage = () => {
       {error && <Alert severity="error">{error}</Alert>}
       <p></p>
       <Togglable buttonLabel="create new Entry">
-        <AddEntryForm onSubmit={submitNewEntry} />
+        <AddEntryForm onSubmit={submitNewEntry} diagnosis={diagnosis} />
       </Togglable>{" "}
       <h3>Entries</h3>
       {patient.entries.length === 0 ? (
@@ -129,10 +144,11 @@ const PatientPage = () => {
                   {entry.date} <WorkIcon /> {entry.employerName} <br />
                   <em>{entry.description}</em> <br />
                   {entry.sickLeave && (
-                    <p>
+                    <>
                       Sick Leave: {entry.sickLeave.startDate} -{" "}
                       {entry.sickLeave.endDate}
-                    </p>
+                      <br />
+                    </>
                   )}
                   Diagnosed by {entry.specialist} <br />
                 </div>
